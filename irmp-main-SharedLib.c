@@ -10,8 +10,11 @@
  * (at your option) any later version.
  *---------------------------------------------------------------------------------------------------------------------------------------------------
  */
+
+
 #include "irmp.h"
 #include "irmp.c"
+
 
 #ifndef IRMP_DLLEXPORT
 
@@ -24,17 +27,16 @@
 
 #include "irmp-main-SharedLib.h"
 
+
+
 static uint32_t s_endSample = 0;
 
-uint32_t
-IRMP_GetSampleRate(void)
-{
+uint32_t IRMP_GetSampleRate(void) {
     return F_INTERRUPTS;
 }
 
-void
-IRMP_Reset(void)
-{
+
+void IRMP_Reset(void) {
     IRMP_PIN = 0xff;
     IRMP_DATA data;
     int i;
@@ -49,9 +51,8 @@ IRMP_Reset(void)
     s_endSample = 0;
 }
 
-uint32_t
-IRMP_AddSample(const uint8_t i_sample)
-{
+
+uint32_t IRMP_AddSample(const uint8_t i_sample) {
     IRMP_PIN = i_sample;
     uint_fast8_t r = irmp_ISR();
     if (r) {
@@ -62,9 +63,8 @@ IRMP_AddSample(const uint8_t i_sample)
     return 0;
 }
 
-uint32_t
-IRMP_GetData(IRMP_DataExt* o_data)
-{
+
+uint32_t IRMP_GetData(IRMP_DataExt* o_data) {
 
     IRMP_DATA d;
     if (irmp_get_data(&d))
@@ -81,14 +81,11 @@ IRMP_GetData(IRMP_DataExt* o_data)
     return FALSE;
 }
 
-IRMP_DataExt
-IRMP_Detect(const uint8_t* i_buff, uint32_t i_len)
-{
+
+IRMP_DataExt IRMP_Detect(const uint8_t* i_buff, uint32_t i_len) {
     IRMP_DataExt ret = { 0 };
-    while (s_curSample < i_len)
-    {
-        if (IRMP_AddSample(i_buff[s_curSample]))
-        {
+    while (s_curSample < i_len) {
+        if (IRMP_AddSample(i_buff[s_curSample])) {
             IRMP_GetData(&ret);
             return ret;
         }
@@ -96,15 +93,13 @@ IRMP_Detect(const uint8_t* i_buff, uint32_t i_len)
     return ret;
 }
 
-const char *
-IRMP_GetProtocolName(uint32_t i_protocol)
-{
-    if (i_protocol < IRMP_N_PROTOCOLS)
-    {
+
+const char* IRMP_GetProtocolName(uint32_t i_protocol) {
+    if (i_protocol < IRMP_N_PROTOCOLS) {
         return irmp_protocol_names[i_protocol];
     }
-    else
-    {
+    else {
         return "unknown";
     }
 }
+

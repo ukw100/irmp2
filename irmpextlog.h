@@ -1,5 +1,5 @@
-#ifndef _IRMPEXTLOG_H
-#define _IRMPEXTLOG_H
+#ifndef IRMPEXTLOG_H
+#define IRMPEXTLOG_H
 
 #ifdef __cplusplus
 extern "C"
